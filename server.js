@@ -2,7 +2,8 @@
 import express from "express";            // Express framework for creating the web server
 import mongoose from "mongoose";          // MongoDB object modeling tool
 import bodyParser from "express";         // For parsing incoming request bodies (NOTE: This should be 'body-parser', not 'express')
-import userRouter from './Routes/user.js' // Router for user-related endpoints
+import userRouter from './Routes/user.js'; // Router for user-related endpoints
+import { rateLimit } from 'express-rate-limit' // Rate limite to avoid the so many requeste
 import productRouter from './Routes/product.js' // Router for product-related endpoints
 import cartRouter from './Routes/cart.js' // Router for shopping cart functionality
 
@@ -20,17 +21,28 @@ app.use(bodyParser.json());
 // This allows us to keep sensitive information like database URLs and API keys separate from the code
 config({ path: ".env" });
 
+// Calling rate limite
+const limiter = rateLimit({
+  windowMs: 1000 * 60,
+  max: 10,
+  message: "Too many request from this IP, please try again later After some time"
+})
+
 // Mount the user router at the '/api/user' path
 // All routes defined in userRouter will be prefixed with '/api/user'
 app.use('/api/user', userRouter)
 
 // Mount the product router at the '/api/product' path
 // All routes defined in productRouter will be prefixed with '/api/product'
-app.use('/api/product', productRouter)
+app.use('/api/product',limiter, productRouter)
 
 // Mount the cart router at the '/api/cart' path
 // All routes defined in cartRouter will be prefixed with '/api/cart'
-app.use('/api/cart', cartRouter)
+app.use('/api/cart',limiter, cartRouter)
+
+// limter act like a middileware from to user and hacker 
+app.use(limiter)
+
 
 // Define a simple home route to verify the server is running
 // When users access the root URL, they'll get a JSON response
