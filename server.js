@@ -1,4 +1,3 @@
-// Import necessary packages
 import express from "express";            // Express framework for creating the web server
 import mongoose from "mongoose";          // MongoDB object modeling tool
 import bodyParser from "express";         // For parsing incoming request bodies (NOTE: This should be 'body-parser', not 'express')
@@ -6,6 +5,8 @@ import userRouter from './Routes/user.js'; // Router for user-related endpoints
 import { rateLimit } from 'express-rate-limit' // Rate limite to avoid the so many requeste
 import productRouter from './Routes/product.js' // Router for product-related endpoints
 import cartRouter from './Routes/cart.js' // Router for shopping cart functionality
+// import payRoutes from './Routes/payu.routes.js' ;
+import emailRoutes   from './Routes/email.routes.js';
 
 // Import dotenv config function to load environment variables
 import { config } from "dotenv";
@@ -40,9 +41,13 @@ app.use('/api/product',limiter, productRouter)
 // All routes defined in cartRouter will be prefixed with '/api/cart'
 app.use('/api/cart',limiter, cartRouter)
 
+// app.use('/api/payu', payRoutes);
+
+app.use('/api', emailRoutes); 
+// app.use('/api', emailRoutes);
+
 // limter act like a middileware from to user and hacker 
 app.use(limiter)
-
 
 // Define a simple home route to verify the server is running
 // When users access the root URL, they'll get a JSON response
@@ -64,4 +69,3 @@ mongoose.connect(process.env.DBURL)
 app.listen(process.env.PORT, () => {
   console.log("Server is running on port " + process.env.PORT);
 })
- 
