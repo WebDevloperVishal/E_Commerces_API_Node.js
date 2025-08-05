@@ -44,7 +44,6 @@ app.use('/api/cart',limiter, cartRouter)
 // app.use('/api/payu', payRoutes);
 
 app.use('/api', emailRoutes); 
-// app.use('/api', emailRoutes);
 
 // limter act like a middileware from to user and hacker 
 app.use(limiter)
