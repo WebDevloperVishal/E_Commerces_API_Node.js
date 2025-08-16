@@ -1,11 +1,10 @@
 import express from "express";            // Express framework for creating the web server
 import mongoose from "mongoose";          // MongoDB object modeling tool
 import bodyParser from "express";         // For parsing incoming request bodies (NOTE: This should be 'body-parser', not 'express')
-import userRouter from './Routes/user.js'; // Router for user-related endpoints
+import User from './Routes/user.js'; // Router for user-related endpoints
 import { rateLimit } from 'express-rate-limit' // Rate limite to avoid the so many requeste
 import productRouter from './Routes/product.js' // Router for product-related endpoints
 import cartRouter from './Routes/cart.js' // Router for shopping cart functionality
-// import payRoutes from './Routes/payu.routes.js' ;
 import emailRoutes   from './Routes/email.routes.js';
 
 // Import dotenv config function to load environment variables
@@ -31,7 +30,7 @@ const limiter = rateLimit({
 
 // Mount the user router at the '/api/user' path
 // All routes defined in userRouter will be prefixed with '/api/user'
-app.use('/api/user', userRouter)
+app.use('/api/user', User)
 
 // Mount the product router at the '/api/product' path
 // All routes defined in productRouter will be prefixed with '/api/product'
