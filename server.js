@@ -5,7 +5,6 @@ import User from './Routes/user.js'; // Router for user-related endpoints
 import { rateLimit } from 'express-rate-limit' // Rate limite to avoid the so many requeste
 import productRouter from './Routes/product.js' // Router for product-related endpoints
 import cartRouter from './Routes/cart.js' // Router for shopping cart functionality
-import emailRoutes   from './Routes/email.routes.js';
 
 // Import dotenv config function to load environment variables
 import { config } from "dotenv";
@@ -39,10 +38,6 @@ app.use('/api/product',limiter, productRouter)
 // Mount the cart router at the '/api/cart' path
 // All routes defined in cartRouter will be prefixed with '/api/cart'
 app.use('/api/cart',limiter, cartRouter)
-
-// app.use('/api/payu', payRoutes);
-
-app.use('/api', emailRoutes); 
 
 // limter act like a middileware from to user and hacker 
 app.use(limiter)
